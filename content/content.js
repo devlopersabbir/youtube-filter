@@ -3,19 +3,13 @@ console.clear();
 /**
  * Remove recommended video pannel
  */
-const removeRecommendedVidePannel = () => {
+const removeRecommendedVidePannel = async () => {
   const recommendedPanel = document.getElementById("secondary");
   if (recommendedPanel) {
-    recommendedPanel.remove();
-    browser.runtime.sendMessage({
-      action: "logMessage",
-      message: "Removed the recommended video panel",
-    });
-  } else {
-    browser.runtime.sendMessage({
-      action: "logMessage",
-      message: "Fail to remove",
-    });
+    const { isChecked } = await browser.storage.local.get("isChecked");
+    if (isChecked) {
+      recommendedPanel.remove();
+    }
   }
 };
 
