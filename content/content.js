@@ -7,6 +7,7 @@ const removeRecommendedVidePannel = async () => {
   const recommendedPanel = document.getElementById("secondary");
   if (recommendedPanel) {
     const { isChecked } = await browser.storage.local.get("isChecked");
+    console.log("check if it's checked: ", isChecked);
     if (isChecked) {
       recommendedPanel.remove();
     }

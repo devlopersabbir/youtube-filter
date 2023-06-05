@@ -1,6 +1,6 @@
-// dom selection
-const recommendedCheckBox = document.getElementById("recommendedCheckBox");
+// dom seletion
 const shortCheckBox = document.getElementById("shortCheckBox");
+
 const resetBtn = document.getElementById("btn-reset");
 
 // show recommended video
