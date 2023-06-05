@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Filter</title>
+    <!-- tailwind css -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mx-auto max-w-[420px] p-7 border">
+      <label class="flex items-center space-x-2">
+        <input id="checkBox" type="checkbox" class="form-checkbox" />
+        <span class="text-sm">Show Recommended Video</span>
+      </label>
+    </div>
+    <button class="absolute bottom-1 right-1" id="btn-reset">Reset</button>
+    <script src="popup.js"></script>
+  </body>
+</html>

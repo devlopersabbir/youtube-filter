@@ -1,0 +1,31 @@
+{
+  "name": "YouTube Filter",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "A Firefox extension that filters out distractions on YouTube",
+  "browser_action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "19": "icons/icon.png",
+      "38": "icons/icon.png"
+    },
+    "default_title": "YouTube Filter"
+  },
+  "permissions": ["activeTab", "tabs", "storage", "https://www.youtube.com/*"],
+  "icons": {
+    "128": "icons/icon.png",
+    "16": "icons/icon.png",
+    "256": "icons/icon.png",
+    "48": "icons/icon.png"
+  },
+  "background": {
+    "scripts": ["background/background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content/content.js"]
+    }
+  ]
+}
