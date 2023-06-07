@@ -4,7 +4,9 @@ const hideComments = document.getElementById("hideComments");
 const hideShort = document.getElementById("hideShort");
 const hideRatingAndView = document.getElementById("hideRatingAndView");
 const blurThumb = document.getElementById("blurThumb");
+const inputTimerDuration = document.getElementById("timerDuration");
 const resetBtn = document.getElementById("btn-reset");
+const saveButton = document.getElementById("saveButton");
 
 /**
  *  show recommended video
@@ -97,6 +99,21 @@ blurThumb.addEventListener("change", (e) => {
  * Blur youtube video Thumb
  * End
  */
+
+const saveOptions = () => {
+  const timerDuration = parseInt(inputTimerDuration.value);
+  browser.storage.local.set({ timerDuration });
+};
+
+const restoreOptions = () => {
+  browser.storage.local.get("timerDuration").then((result) => {
+    const timerDuration = result.timerDuration || 20;
+    inputTimerDuration.value = timerDuration;
+  });
+};
+
+document.addEventListener("DOMContentLoaded", restoreOptions);
+saveButton.addEventListener("click", saveOptions);
 
 // reset button
 resetBtn.addEventListener("click", () => {

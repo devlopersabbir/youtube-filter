@@ -17,3 +17,7 @@ browser.storage.local
   .get("isShort")
   .then((res) => console.log("res Rating and View", res))
   .catch((error) => console.log("errro:", error));
+
+browser.storage.local
+  .get("timerDuration")
+  .then((res) => console.log("timeduration: ", res));
