@@ -15,24 +15,13 @@
     <div class="bg-blue-300">
       <div class="container mx-auto max-w-[420px] p-7">
         <div class="flex flex-col gap-3">
-          <!-- <div class="input-duration">
-          <label class="flex items-center space-x-2">
-            <input
-              id="durationInput"
-              type="number"
-              placeholder="Input second only"
-              class="form-input"
-            />
-            <span class="text-sm">Timer Duration (sec)</span>
-          </label>
-        </div> -->
           <div class="flex space-x-4 flex-col gap-2">
             <label for="timerDuration" class="text-lg"
-              >Timer Duration (in seconds):</label
+              >Hour limit (minute)</label
             >
             <input
               type="number"
-              id="timerDuration"
+              id="hourLimit"
               min="1"
               class="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -92,7 +81,6 @@
       </button>
     </div>
     <script src="popup.js"></script>
-    <!-- <script src="recommendedCheckBox.js"></script> -->
-    <!-- <script src="shortCheckBox.js"></script> -->
+    <script src="timer.js"></script>
   </body>
 </html>

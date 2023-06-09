@@ -4,7 +4,6 @@ const hideComments = document.getElementById("hideComments");
 const hideShort = document.getElementById("hideShort");
 const hideRatingAndView = document.getElementById("hideRatingAndView");
 const blurThumb = document.getElementById("blurThumb");
-const inputTimerDuration = document.getElementById("timerDuration");
 const resetBtn = document.getElementById("btn-reset");
 const saveButton = document.getElementById("saveButton");
 
@@ -100,28 +99,30 @@ blurThumb.addEventListener("change", (e) => {
  * End
  */
 
-const saveOptions = () => {
-  const timerDuration = parseInt(inputTimerDuration.value);
-  browser.storage.local.set({ timerDuration });
-};
 
-const restoreOptions = () => {
-  browser.storage.local.get("timerDuration").then((result) => {
-    const timerDuration = result.timerDuration || 20;
-    inputTimerDuration.value = timerDuration;
-  });
-};
+// Add this code at the top of popup.js
+const hourLimitInput = document.getElementById("hourLimit");
 
-document.addEventListener("DOMContentLoaded", restoreOptions);
-saveButton.addEventListener("click", saveOptions);
+// Event listener for the "Save" button click
+saveButton.addEventListener("click", () => {
+  const hourLimit = parseInt(hourLimitInput.value);
+  if (isNaN(hourLimit) || hourLimit <= 0) {
+    // Invalid input, display an error message or handle accordingly
+    return;
+  }
 
-if (document.readyState !== "loading") {
-  restoreOptions();
-} else {
-  document.addEventListener("DOMContentLoaded", () => {
-    restoreOptions();
-  });
-}
+  // Save the hour limit to the storage
+  browser.storage.local.set({ hourLimit });
+
+  // Clear the input field
+  hourLimitInput.value = "";
+
+  // Schedule an alarm to reset the video count after the specified time
+  const alarmDelayInMinutes = hourLimit * 60; // Convert to minutes
+  browser.alarms.create("resetVideoCount", { delayInMinutes: alarmDelayInMinutes });
+});
+
+
 
 // reset button
 resetBtn.addEventListener("click", () => {

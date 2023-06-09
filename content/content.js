@@ -101,7 +101,16 @@ const blurYouTubeVideoThumb = async () => {
 }`;
     document.head.appendChild(style);
   }
+  // Notify the background script that a video has been watched
+  browser.runtime.sendMessage({ type: "videoWatched" });
 };
+
+// Listen for message from background script to reset the video count
+browser.runtime.onMessage.addListener((message) => {
+  if (message.type === "resetVideoCount") {
+    browser.storage.local.set({ videoCount: 0 });
+  }
+});
 
 if (document.readyState !== "loading") {
   removeRecommendedVidePannel();
@@ -123,116 +132,3 @@ if (document.readyState !== "loading") {
  * Set timer duration
  * Start from here
  */
-
-const startTimer = (duration) => {
-  const timerElement = document.createElement("div");
-  timerElement.id = "timerElement";
-  timerElement.style.width = "60px";
-  timerElement.style.position = "fixed";
-  timerElement.style.top = "10px";
-  timerElement.style.right = "10px";
-  timerElement.style.padding = "10px";
-  timerElement.style.background = "rgba(0, 0, 0, 0.8)";
-  timerElement.style.color = "#fff";
-  timerElement.style.fontSize = "18px";
-  timerElement.style.zIndex = "999999";
-  timerElement.style.cursor = "move";
-  document.body.appendChild(timerElement);
-
-  let secondsRemaining = duration;
-
-  const intervalId = setInterval(() => {
-    if (secondsRemaining <= 0) {
-      clearInterval(intervalId);
-      // Additional actions to perform after the timer ends
-      console.log("Time is end")
-      // For example, redirect to another page or show a notification
-    } else {
-      const minutes = Math.floor(secondsRemaining / 60);
-      const seconds = secondsRemaining % 60;
-      timerElement.textContent = `Timer: ${minutes}:${seconds
-        .toString()
-        .padStart(2, "0")}`;
-      secondsRemaining--;
-    }
-  }, 1000);
-
-
-
-  // Make the timer element draggable
-  let isDragging = false;
-  let offset = { x: 0, y: 0 };
-
-  timerElement.addEventListener('mousedown', handleMouseDown);
-  timerElement.addEventListener('mouseup', handleMouseUp);
-  timerElement.addEventListener('mousemove', handleMouseMove);
-
-  function handleMouseDown(event) {
-    isDragging = true;
-    offset = {
-      x: event.clientX - timerElement.offsetLeft,
-      y: event.clientY - timerElement.offsetTop
-    };
-  }
-
-  function handleMouseUp() {
-    isDragging = false;
-  }
-
-  function handleMouseMove(event) {
-    if (isDragging) {
-      const left = event.clientX - offset.x;
-      const top = event.clientY - offset.y;
-      timerElement.style.left = `${left}px`;
-      timerElement.style.top = `${top}px`;
-    }
-  }
-};
-
-
-// get video duration from the youtube
-const getVideoDuration = () => {
-  const durationElement = document.querySelector(".ytp-time-duration");
-  if (durationElement) {
-    const durationText = durationElement.textContent;
-    const durationMatch = durationText.match(/(\d+):(\d+)/);
-    if (durationMatch) {
-      const minutes = parseInt(durationMatch[1]);
-      const seconds = parseInt(durationMatch[2]);
-      return minutes * 60 + seconds;
-    }
-  }
-  return null;
-};
-
-// check if video is short
-const isShortVideo = () => {
-  const videoElement = document.querySelector("video");
-  if (videoElement) {
-    const duration = getVideoDuration();
-    if (duration && duration <= 60) {
-      return true;
-    }
-  }
-  return false;
-};
-// Get the timer duration from the storage or use the default value
-const getTimerDuration = () => {
-  return new Promise((resolve) => {
-    browser.storage.local.get("timerDuration").then((result) => {
-      const timerDuration = result.timerDuration || 20;
-      resolve(timerDuration);
-    });
-  });
-};
-// handle youtube page load
-const handleYouTubeVideoLoaded = async () => {
-  const isShort = isShortVideo();
-  const timerDuration = await getTimerDuration();
-  const duration = isShort ? 60 : timerDuration;
-  startTimer(duration);
-};
-
-
-
-handleYouTubeVideoLoaded();
