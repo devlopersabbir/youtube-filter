@@ -12,9 +12,10 @@
     />
   </head>
   <body>
-    <div class="container mx-auto max-w-[420px] p-7 border">
-      <div class="flex flex-col gap-3">
-        <!-- <div class="input-duration">
+    <div class="bg-blue-300">
+      <div class="container mx-auto max-w-[420px] p-7">
+        <div class="flex flex-col gap-3">
+          <!-- <div class="input-duration">
           <label class="flex items-center space-x-2">
             <input
               id="durationInput"
@@ -25,64 +26,71 @@
             <span class="text-sm">Timer Duration (sec)</span>
           </label>
         </div> -->
-        <div class="flex space-x-4">
-          <label for="timerDuration" class="text-lg"
-            >Timer Duration (in seconds):</label
-          >
-          <input
-            type="number"
-            id="timerDuration"
-            min="1"
-            class="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            id="saveButton"
-            class="bg-blue-500 text-white px-4 py-2 rounded-lg"
-          >
-            Save
-          </button>
-        </div>
-        <div class="box">
-          <label class="flex items-center space-x-2">
+          <div class="flex space-x-4 flex-col gap-2">
+            <label for="timerDuration" class="text-lg"
+              >Timer Duration (in seconds):</label
+            >
             <input
-              id="recommendedCheckBox"
-              type="checkbox"
-              class="form-checkbox"
+              type="number"
+              id="timerDuration"
+              min="1"
+              class="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <span class="text-sm">Hide Recommended Video</span>
-          </label>
-        </div>
-        <div class="box2">
-          <label class="flex items-center space-x-2">
-            <input id="hideShort" type="checkbox" class="form-checkbox" />
-            <span class="text-sm">Hide Short</span>
-          </label>
-        </div>
-        <div class="box2">
-          <label class="flex items-center space-x-2">
-            <input id="hideComments" type="checkbox" class="form-checkbox" />
-            <span class="text-sm">Hide Comments</span>
-          </label>
-        </div>
-        <div class="rating_and_view">
-          <label class="flex items-center space-x-2">
-            <input
-              id="hideRatingAndView"
-              type="checkbox"
-              class="form-checkbox"
-            />
-            <span class="text-sm">Hide Rating & views</span>
-          </label>
-        </div>
-        <div class="thumb-blur">
-          <label class="flex items-center space-x-2">
-            <input id="blurThumb" type="checkbox" class="form-checkbox" />
-            <span class="text-sm">Blur thumbnails</span>
-          </label>
+            <button
+              id="saveButton"
+              class="bg-blue-500 text-white px-4 py-2 rounded-lg"
+            >
+              Save
+            </button>
+          </div>
+          <div class="box">
+            <label class="flex items-center space-x-2 justify-between">
+              <span class="text-sm">Hide Recommended Video</span>
+              <input
+                id="recommendedCheckBox"
+                type="checkbox"
+                class="form-checkbox"
+              />
+            </label>
+          </div>
+          <div class="box2">
+            <label class="flex items-center space-x-2 justify-between">
+              <span class="text-sm">Hide Short</span>
+              <input id="hideShort" type="checkbox" class="form-checkbox" />
+            </label>
+          </div>
+          <div class="box2">
+            <label class="flex items-center space-x-2 justify-between">
+              <span class="text-sm">Hide Comments</span>
+              <input id="hideComments" type="checkbox" class="form-checkbox" />
+            </label>
+          </div>
+          <div class="rating_and_view">
+            <label class="flex items-center space-x-2 justify-between">
+              <span class="text-sm">Hide Rating & views</span>
+              <input
+                id="hideRatingAndView"
+                type="checkbox"
+                class="form-checkbox"
+              />
+            </label>
+          </div>
+          <div class="thumb-blur">
+            <label class="flex items-center space-x-2 justify-between">
+              <span class="text-sm">Blur thumbnails</span>
+              <input id="blurThumb" type="checkbox" class="form-checkbox" />
+            </label>
+          </div>
         </div>
       </div>
+
+      <button
+        class="absolute bottom-0 right-0 mt-5 bg-blue-500 rounded px-2"
+        id="btn-reset"
+      >
+        Reset
+      </button>
     </div>
-    <button class="absolute bottom-1 right-1" id="btn-reset">Reset</button>
     <script src="popup.js"></script>
     <!-- <script src="recommendedCheckBox.js"></script> -->
     <!-- <script src="shortCheckBox.js"></script> -->

@@ -25,7 +25,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.youtube.com/*"],
-      "js": ["content/content.js", "content/timer.js"]
+      "js": ["content/content.js"]
     }
   ]
 }

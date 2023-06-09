@@ -115,6 +115,14 @@ const restoreOptions = () => {
 document.addEventListener("DOMContentLoaded", restoreOptions);
 saveButton.addEventListener("click", saveOptions);
 
+if (document.readyState !== "loading") {
+  restoreOptions();
+} else {
+  document.addEventListener("DOMContentLoaded", () => {
+    restoreOptions();
+  });
+}
+
 // reset button
 resetBtn.addEventListener("click", () => {
   browser.tabs.reload();

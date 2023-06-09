@@ -9,10 +9,10 @@ const startTimer = (duration) => {
   timerElemnt.style.top = "10px";
   timerElemnt.style.right = "10px";
   timerElemnt.style.padding = "10px";
-  timerElement.style.background = "rgba(0, 0, 0, 0.8)";
-  timerElement.style.color = "#fff";
-  timerElement.style.fontSize = "18px";
-  timerElement.style.zIndex = "999999";
+  timerElemnt.style.background = "rgba(0, 0, 0, 0.8)";
+  timerElemnt.style.color = "#fff";
+  timerElemnt.style.fontSize = "18px";
+  timerElemnt.style.zIndex = "999999";
 
   document.body.appendChild(timerElemnt);
 
