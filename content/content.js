@@ -65,6 +65,10 @@ const hideRatingAndView = async () => {
     #info span:first-child {
       display: none !important;
     }
+
+    #metadata-line span:first-child {
+      display: none !important;
+    }
 `;
     document.head.appendChild(style);
   }
