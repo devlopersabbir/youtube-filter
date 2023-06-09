@@ -11,6 +11,10 @@ const removeRecommendedVidePannel = async () => {
       #secondary {
         display: none !important;
       }
+
+      #primary {
+        width: 100% !important;
+      }
      `;
     document.head.appendChild(style);
   }
@@ -59,17 +63,23 @@ const hideRatingAndView = async () => {
   const { isRatingAndViews } = await browser.storage.local.get(
     "isRatingAndViews"
   );
+  //   if (isRatingAndViews) {
+  //     const style = document.createElement("style");
+  //     style.textContent = `
+  //     #info span:first-child, #metadata-line {
+  //       display: none !important;
+  //     }
+  // `;
+
+  //     document.head.appendChild(style);
+  //   }
   if (isRatingAndViews) {
     const style = document.createElement("style");
     style.textContent = `
-    #info span:first-child {
-      display: none !important;
-    }
-
-    #metadata-line span:first-child {
-      display: none !important;
-    }
-`;
+      #info, #metadata-line, #segmented-like-button .yt-spec-button-shape-next--button-text-content, #owner #owner-sub-count {
+        display: none !important;
+      }
+  `;
     document.head.appendChild(style);
   }
 };
@@ -138,7 +148,7 @@ const startTimer = (duration) => {
     } else {
       const minutes = Math.floor(secondsRemaining / 60);
       const seconds = secondsRemaining % 60;
-      timerElement.textContent = `Timer: ${minutes}:${seconds
+      timerElemnt.textContent = `Timer: ${minutes}:${seconds
         .toString()
         .padStart(2, "0")}`;
       secondsRemaining--;
@@ -188,4 +198,4 @@ const handleYouTubeVideoLoaded = async () => {
   startTimer(duration);
 };
 
-handleYouTubePageLoad();
+handleYouTubeVideoLoaded();
