@@ -125,36 +125,71 @@ if (document.readyState !== "loading") {
  */
 
 const startTimer = (duration) => {
-  const timerElemnt = document.createElement("div");
-  timerElemnt.style.position = "fixed";
-  timerElemnt.style.top = "10px";
-  timerElemnt.style.right = "10px";
-  timerElemnt.style.padding = "10px";
-  timerElemnt.style.background = "rgba(0, 0, 0, 0.8)";
-  timerElemnt.style.color = "#fff";
-  timerElemnt.style.fontSize = "18px";
-  timerElemnt.style.zIndex = "999999";
-
-  document.body.appendChild(timerElemnt);
+  const timerElement = document.createElement("div");
+  timerElement.id = "timerElement";
+  timerElement.style.width = "60px";
+  timerElement.style.position = "fixed";
+  timerElement.style.top = "10px";
+  timerElement.style.right = "10px";
+  timerElement.style.padding = "10px";
+  timerElement.style.background = "rgba(0, 0, 0, 0.8)";
+  timerElement.style.color = "#fff";
+  timerElement.style.fontSize = "18px";
+  timerElement.style.zIndex = "999999";
+  timerElement.style.cursor = "move";
+  document.body.appendChild(timerElement);
 
   let secondsRemaining = duration;
 
-  const interValId = setInterval(() => {
+  const intervalId = setInterval(() => {
     if (secondsRemaining <= 0) {
-      clearInterval(interValId);
-
-      // You can add additional actions once the timer ends
+      clearInterval(intervalId);
+      // Additional actions to perform after the timer ends
+      console.log("Time is end")
       // For example, redirect to another page or show a notification
     } else {
       const minutes = Math.floor(secondsRemaining / 60);
       const seconds = secondsRemaining % 60;
-      timerElemnt.textContent = `Timer: ${minutes}:${seconds
+      timerElement.textContent = `Timer: ${minutes}:${seconds
         .toString()
         .padStart(2, "0")}`;
       secondsRemaining--;
     }
   }, 1000);
+
+
+
+  // Make the timer element draggable
+  let isDragging = false;
+  let offset = { x: 0, y: 0 };
+
+  timerElement.addEventListener('mousedown', handleMouseDown);
+  timerElement.addEventListener('mouseup', handleMouseUp);
+  timerElement.addEventListener('mousemove', handleMouseMove);
+
+  function handleMouseDown(event) {
+    isDragging = true;
+    offset = {
+      x: event.clientX - timerElement.offsetLeft,
+      y: event.clientY - timerElement.offsetTop
+    };
+  }
+
+  function handleMouseUp() {
+    isDragging = false;
+  }
+
+  function handleMouseMove(event) {
+    if (isDragging) {
+      const left = event.clientX - offset.x;
+      const top = event.clientY - offset.y;
+      timerElement.style.left = `${left}px`;
+      timerElement.style.top = `${top}px`;
+    }
+  }
 };
+
+
 // get video duration from the youtube
 const getVideoDuration = () => {
   const durationElement = document.querySelector(".ytp-time-duration");
@@ -197,5 +232,7 @@ const handleYouTubeVideoLoaded = async () => {
   const duration = isShort ? 60 : timerDuration;
   startTimer(duration);
 };
+
+
 
 handleYouTubeVideoLoaded();
