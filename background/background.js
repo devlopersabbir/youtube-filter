@@ -50,6 +50,7 @@ browser.runtime.onMessage.addListener((message) => {
       browser.storage.local.get("maxVideos").then(({ maxVideos }) => {
         console.log("max video: ", maxVideos);
         if (playCount >= maxVideos) {
+          browser.storage.local.set({ playCount: 0 });
           browser.runtime.openOptionsPage();
         }
       });
