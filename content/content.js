@@ -140,7 +140,14 @@ const incrementVideoPlayCount = async () => {
 
       browser.storage.local.get("maxVideos").then(({ maxVideos }) => {
         if (newPlayCount === maxVideos) {
-          // browser.runtime.openOptionsPage();
+          browser.runtime
+            .openOptionsPage()
+            .then(() => {
+              console.log("Options page opened successfully.");
+            })
+            .catch((error) => {
+              console.error("Failed to open options page:", error);
+            });
           console.log("you have cors your limit");
         }
       });

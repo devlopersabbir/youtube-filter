@@ -38,6 +38,7 @@ browser.runtime.onMessage.addListener((message) => {
   if (message.type === "videoPlay") {
     // Get the current video play count
     browser.storage.local.get("playCount").then((result) => {
+      console.log(result)
       const playCount = result.playCount || 0;
       const newPlayCount = playCount + 1;
 
@@ -46,15 +47,9 @@ browser.runtime.onMessage.addListener((message) => {
 
       // Check if the play count exceeds the limit within one hour
       browser.storage.local.get("maxVideos").then(({ maxVideos }) => {
+        console.log("max video: ", maxVideos)
         if (newPlayCount > maxVideos) {
-          browser.runtime
-            .openOptionsPage()
-            .then(() => {
-              console.log("Options page opened successfully.");
-            })
-            .catch((error) => {
-              console.error("Failed to open options page:", error);
-            });
+          console.log('limite over')
         }
       });
     });
