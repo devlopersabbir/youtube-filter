@@ -27,6 +27,7 @@ browser.storage.local
 //
 // Check if the user has used YouTube before
 browser.storage.local.get("firstTimeUsage").then((result) => {
+  console.log("if a user first time use youtube", result);
   if (!result.firstTimeUsage) {
     // Set the first time usage flag and current timestamp
     browser.storage.local.set({ firstTimeUsage: true, startTime: Date.now() });
@@ -35,21 +36,21 @@ browser.storage.local.get("firstTimeUsage").then((result) => {
 
 // Listen for video play events from the content script
 browser.runtime.onMessage.addListener((message) => {
-  if (message.type === "videoPlay") {
+  if (message === "videoPlay") {
+    console.log("=========hello===========");
     // Get the current video play count
     browser.storage.local.get("playCount").then((result) => {
-      console.log(result)
       const playCount = result.playCount || 0;
-      const newPlayCount = playCount + 1;
+      // const newPlayCount = playCount + 1;
 
       // Update the play count
-      browser.storage.local.set({ playCount: newPlayCount });
+      // browser.storage.local.set({ playCount: newPlayCount });
 
       // Check if the play count exceeds the limit within one hour
       browser.storage.local.get("maxVideos").then(({ maxVideos }) => {
-        console.log("max video: ", maxVideos)
-        if (newPlayCount > maxVideos) {
-          console.log('limite over')
+        console.log("max video: ", maxVideos);
+        if (playCount >= maxVideos) {
+          browser.runtime.openOptionsPage();
         }
       });
     });

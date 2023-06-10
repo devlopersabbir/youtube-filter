@@ -103,11 +103,16 @@ blurThumb.addEventListener("change", (e) => {
 /**
  * Timer start
  */
+
+// get value from the input from 
+maxVideosInput.addEventListener("change", (event)=>{
+  const maxVideos = event.target.value;
+  browser.storage.local.set({maxVideos})
+})
 // Load the maximum videos value from storage and update the input field
 browser.storage.local.get("maxVideos").then((response) => {
   const maxVideos = response.maxVideos;
-  maxVideosInput.value = maxVideos || 5; // Set default value to 3 if not found
-  console.log("maxvideos", maxVideos);
+  maxVideosInput.value = maxVideos || 0; // Set default value to 3 if not found
 });
 
 // Save the maximum videos value to storage when the Save button is clicked

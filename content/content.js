@@ -135,20 +135,22 @@ const incrementVideoPlayCount = async () => {
       const newPlayCount = playCount + 1;
       browser.storage.local.set({ playCount: newPlayCount });
 
+      // send play message from the content file to background file
+      browser.runtime.sendMessage("videoPlay");
       console.log("New video play");
       console.log("Play count:", newPlayCount);
 
       browser.storage.local.get("maxVideos").then(({ maxVideos }) => {
-        if (newPlayCount === maxVideos) {
-          browser.runtime
-            .openOptionsPage()
-            .then(() => {
-              console.log("Options page opened successfully.");
-            })
-            .catch((error) => {
-              console.error("Failed to open options page:", error);
-            });
-          console.log("you have cors your limit");
+        console.log(" from content script file", maxVideos);
+        if (newPlayCount >= maxVideos) {
+          alert(
+            `Breack your limit. MaxVideos: ${maxVideos} and total play: ${newPlayCount}`
+          );
+
+          console.log(
+            `Breack your limit. MaxVideos: ${maxVideos} and total play: ${newPlayCount}`
+          );
+          browser.storage.local.set({ playCount: 0 });
         }
       });
     }
