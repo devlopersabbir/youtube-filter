@@ -22,39 +22,41 @@ browser.storage.local
   .get("timerDuration")
   .then((res) => console.log("timeduration: ", res));
 
-
-  // This script runs in the background and handles the video watching limit feature
-
-// Constants
-const VIDEOS_LIMIT = 2; // Maximum number of videos per hour
-
-// Function to reset the video count after an hour
-function resetVideoCount() {
-  browser.storage.local.set({ videoCount: 0 });
-}
-
-// Function to handle video page replacement
-function replaceVideoPage() {
-  // TODO: Replace the video page with a custom page that tells the user to come back soon
-}
-
-// Event listener for alarm triggered
-browser.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === "resetVideoCount") {
-    resetVideoCount();
+//
+//
+//
+// Check if the user has used YouTube before
+browser.storage.local.get("firstTimeUsage").then((result) => {
+  if (!result.firstTimeUsage) {
+    // Set the first time usage flag and current timestamp
+    browser.storage.local.set({ firstTimeUsage: true, startTime: Date.now() });
   }
 });
 
-// Content script message listener
+// Listen for video play events from the content script
 browser.runtime.onMessage.addListener((message) => {
-  if (message.type === "videoWatched") {
-    browser.storage.local.get("videoCount").then((response) => {
-      const videoCount = response.videoCount || 0;
-      if (videoCount >= VIDEOS_LIMIT) {
-        replaceVideoPage();
-      } else {
-        browser.storage.local.set({ videoCount: videoCount + 1 });
-      }
+  if (message.type === "videoPlay") {
+    // Get the current video play count
+    browser.storage.local.get("playCount").then((result) => {
+      const playCount = result.playCount || 0;
+      const newPlayCount = playCount + 1;
+
+      // Update the play count
+      browser.storage.local.set({ playCount: newPlayCount });
+
+      // Check if the play count exceeds the limit within one hour
+      browser.storage.local.get("maxVideos").then(({ maxVideos }) => {
+        if (newPlayCount > maxVideos) {
+          browser.runtime
+            .openOptionsPage()
+            .then(() => {
+              console.log("Options page opened successfully.");
+            })
+            .catch((error) => {
+              console.error("Failed to open options page:", error);
+            });
+        }
+      });
     });
   }
 });

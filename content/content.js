@@ -102,7 +102,6 @@ const blurYouTubeVideoThumb = async () => {
     document.head.appendChild(style);
   }
   // Notify the background script that a video has been watched
-  browser.runtime.sendMessage({ type: "videoWatched" });
 };
 
 // Listen for message from background script to reset the video count
@@ -112,6 +111,53 @@ browser.runtime.onMessage.addListener((message) => {
   }
 });
 
+/**
+ * Set timer duration
+ * Start from here
+ */
+let currentVideoId = null;
+
+// Function to extract video ID from the URL
+const extractVideoId = (url) => {
+  const regex = /[?&]v=([^&#]*)/;
+  const match = regex.exec(url);
+  return match ? match[1] : null;
+};
+
+// Function to increment the video play count
+const incrementVideoPlayCount = async () => {
+  browser.storage.local.get("playCount").then((result) => {
+    const playCount = result.playCount || 0;
+    const videoId = extractVideoId(window.location.href);
+
+    if (videoId && videoId !== currentVideoId) {
+      currentVideoId = videoId;
+      const newPlayCount = playCount + 1;
+      browser.storage.local.set({ playCount: newPlayCount });
+
+      console.log("New video play");
+      console.log("Play count:", newPlayCount);
+
+      browser.storage.local.get("maxVideos").then(({ maxVideos }) => {
+        if (newPlayCount === maxVideos) {
+          // browser.runtime.openOptionsPage();
+          console.log("you have cors your limit");
+        }
+      });
+    }
+  });
+};
+
+// Add event listeners to detect video play events
+document.addEventListener("yt-navigate-start", incrementVideoPlayCount); // For regular page navigation
+window.addEventListener("spfdone", incrementVideoPlayCount); // For AJAX-based page navigation (e.g., when clicking on related videos)
+
+// Check if the current page is a video and increment the play count if it is
+if (window.location.pathname === "/watch") {
+  incrementVideoPlayCount();
+}
+
+// dom content loading / just loading
 if (document.readyState !== "loading") {
   removeRecommendedVidePannel();
   removeCommentAndPrimary();
@@ -127,8 +173,3 @@ if (document.readyState !== "loading") {
     blurYouTubeVideoThumb();
   });
 }
-
-/**
- * Set timer duration
- * Start from here
- */

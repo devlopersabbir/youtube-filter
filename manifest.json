@@ -11,7 +11,13 @@
     },
     "default_title": "YouTube Filter"
   },
-  "permissions": ["activeTab", "tabs", "storage", "https://www.youtube.com/*", "alarms"],
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "https://www.youtube.com/*",
+    "alarms"
+  ],
   "icons": {
     "128": "icons/icon.png",
     "16": "icons/icon.png",
@@ -20,12 +26,16 @@
   },
   "background": {
     "scripts": ["background/background.js"],
-    "persistent": false
+    "persistent": true
   },
   "content_scripts": [
     {
       "matches": ["*://*.youtube.com/*"],
       "js": ["content/content.js"]
     }
-  ]
+  ],
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  }
 }

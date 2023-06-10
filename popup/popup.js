@@ -6,6 +6,7 @@ const hideRatingAndView = document.getElementById("hideRatingAndView");
 const blurThumb = document.getElementById("blurThumb");
 const resetBtn = document.getElementById("btn-reset");
 const saveButton = document.getElementById("saveButton");
+const maxVideosInput = document.getElementById("maxVideosInput");
 
 /**
  *  show recommended video
@@ -99,30 +100,21 @@ blurThumb.addEventListener("change", (e) => {
  * End
  */
 
-
-// Add this code at the top of popup.js
-const hourLimitInput = document.getElementById("hourLimit");
-
-// Event listener for the "Save" button click
-saveButton.addEventListener("click", () => {
-  const hourLimit = parseInt(hourLimitInput.value);
-  if (isNaN(hourLimit) || hourLimit <= 0) {
-    // Invalid input, display an error message or handle accordingly
-    return;
-  }
-
-  // Save the hour limit to the storage
-  browser.storage.local.set({ hourLimit });
-
-  // Clear the input field
-  hourLimitInput.value = "";
-
-  // Schedule an alarm to reset the video count after the specified time
-  const alarmDelayInMinutes = hourLimit * 60; // Convert to minutes
-  browser.alarms.create("resetVideoCount", { delayInMinutes: alarmDelayInMinutes });
+/**
+ * Timer start
+ */
+// Load the maximum videos value from storage and update the input field
+browser.storage.local.get("maxVideos").then((response) => {
+  const maxVideos = response.maxVideos;
+  maxVideosInput.value = maxVideos || 3; // Set default value to 3 if not found
+  console.log("maxvideos", maxVideos);
 });
 
-
+// Save the maximum videos value to storage when the Save button is clicked
+saveButton.addEventListener("click", () => {
+  const maxVideos = parseInt(maxVideosInput.value, 10);
+  browser.storage.local.set({ maxVideos });
+});
 
 // reset button
 resetBtn.addEventListener("click", () => {
@@ -133,5 +125,7 @@ resetBtn.addEventListener("click", () => {
     hideShort.checked = false;
     hideRatingAndView.checked = false;
     blurThumb.checked = false;
+    maxVideosInput.value = 0;
+    browser.storage.local.set({ maxVideos: 0 });
   });
 });
