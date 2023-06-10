@@ -8,7 +8,7 @@ const removeRecommendedVidePannel = async () => {
   if (isChecked) {
     const style = document.createElement("style");
     style.textContent = `
-      #secondary {
+      #secondary-inner {
         display: none !important;
       }
 
